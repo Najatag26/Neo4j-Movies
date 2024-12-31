@@ -4,17 +4,19 @@ pipeline {
     stages {
         stage('Cloner le dépôt Git') {
             steps {
-                git branch: 'main', credentialsId: 'git-ssh-key', url: 'git@github.com:Najatag26/Automatisation_Project.git'
+                git credentialsId: 'git-ssh-key', url: 'git@github.com:Najatag26/Automatisation_Project.git'
             }
         }
+
         stage('Build') {
             steps {
-                sh './gradlew build' // Ou utilisez mvn si Maven est utilisé
+                sh 'mvn clean install'
             }
         }
+
         stage('Tests') {
             steps {
-                sh './gradlew test' // Exécuter les tests
+                sh 'mvn test'
             }
         }
     }
