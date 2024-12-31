@@ -5,7 +5,7 @@ pipeline {
         stage('Cloner le dépôt Git') {
             steps {
                 // Cloner le projet depuis le dépôt Git
-                git 'https://github.com/nom_utilisateur/nom_du_projet.git'
+                git 'https://github.com/Najatag26/Automatisation_Project.git'
             }
         }
 
