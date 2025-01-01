@@ -14,9 +14,9 @@ pipeline {
 
         stage('Analyse SonarQube') {
             steps {
-                withCredentials([string(credentialsId: 'SonarQubeToken', variable: 'SONAR_AUTH_TOKEN')]) {
+                withCredentials([string(credentialsId: 'Jenkinsfile', variable: 'SONAR_AUTH_TOKEN')]) {
                     script {
-                        def scannerHome = tool 'SonarQube Scanner' // Assurez-vous que "SonarQube Scanner" est configuré dans Jenkins
+                        def scannerHome = tool 'Jenkinsfile' // Assurez-vous que "SonarQube Scanner" est configuré dans Jenkins
                         sh """
                             ${scannerHome}/bin/sonar-scanner \
                             -Dsonar.projectKey=Automatisation_Project \
