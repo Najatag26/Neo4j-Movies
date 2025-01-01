@@ -1,5 +1,9 @@
-pipeline {
+ppipeline {
     agent any
+
+    tools {
+        maven 'Maven' // Assurez-vous que "Maven" est configuré dans Jenkins -> Manage Jenkins -> Global Tool Configuration
+    }
 
     stages {
         stage('Cloner le dépôt Git') {
@@ -27,16 +31,15 @@ pipeline {
 
         stage('Build') {
             steps {
-                def mvnHome = tool name: 'Maven', type: 'maven'
-                sh "${mvnHome}/bin/mvn clean install"
+                sh 'mvn clean install' // Maven est configuré automatiquement via la section tools
             }
         }
 
         stage('Tests') {
             steps {
-                def mvnHome = tool name: 'Maven', type: 'maven'
-                sh "${mvnHome}/bin/mvn test"
+                sh 'mvn test'
             }
         }
     }
 }
+
