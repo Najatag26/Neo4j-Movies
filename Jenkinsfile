@@ -1,8 +1,8 @@
-ppipeline {
+pipeline {
     agent any
 
     tools {
-        maven 'Maven' // Assurez-vous que "Maven" est configuré dans Jenkins -> Manage Jenkins -> Global Tool Configuration
+        maven 'Maven' // Assurez-vous que Maven est configuré dans "Manage Jenkins > Global Tool Configuration" sous le nom "Maven"
     }
 
     stages {
@@ -16,7 +16,7 @@ ppipeline {
             steps {
                 withCredentials([string(credentialsId: 'SonarQubeToken', variable: 'SONAR_AUTH_TOKEN')]) {
                     script {
-                        def scannerHome = tool 'SonarQube Scanner'
+                        def scannerHome = tool 'SonarQube Scanner' // Assurez-vous que "SonarQube Scanner" est configuré dans Jenkins
                         sh """
                             ${scannerHome}/bin/sonar-scanner \
                             -Dsonar.projectKey=Automatisation_Project \
@@ -31,7 +31,7 @@ ppipeline {
 
         stage('Build') {
             steps {
-                sh 'mvn clean install' // Maven est configuré automatiquement via la section tools
+                sh 'mvn clean install'
             }
         }
 
@@ -42,4 +42,3 @@ ppipeline {
         }
     }
 }
-
