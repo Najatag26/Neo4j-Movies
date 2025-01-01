@@ -4,7 +4,7 @@ pipeline {
     stages {
         stage('Cloner le dépôt Git') {
             steps {
-                git credentialsId: 'git-ssh-key', url: 'git@github.com:Najatag26/Automatisation_Project.git'
+                git credentialsId: '19dfc1cb-3cab-444f-828c-ba259cdcff03', url: 'git@github.com:Najatag26/Automatisation_Project.git'
             }
         }
 
