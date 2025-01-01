@@ -9,6 +9,22 @@ pipeline {
             }
         }
 
+        stage('Analyse SonarQube') {
+            steps {
+                script {
+                    def scannerHome = tool 'SonarQube Scanner' // Assurez-vous que SonarQube Scanner est installé
+                    sh """
+                        ${scannerHome}/bin/sonar-scanner \
+                        -Dsonar.projectKey=Automatisation_Project \
+                        -Dsonar.sources=. \
+                        -Dsonar.host.url=http://localhost:9000 \
+                        -Dsonar.login=SonarQubeToken
+                    """
+                }
+            }
+        }
+
+
         stage('Build') {
             steps {
                 sh 'mvn clean install'
