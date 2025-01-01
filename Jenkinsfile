@@ -18,7 +18,7 @@ pipeline {
                         -Dsonar.projectKey=Automatisation_Project \
                         -Dsonar.sources=. \
                         -Dsonar.host.url=http://localhost:9000 \
-                        -Dsonar.login=SonarQubeToken
+                        -Dsonar.login=JenkinsToken
                     """
                 }
             }
