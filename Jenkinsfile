@@ -23,6 +23,7 @@ pipeline {
                             -Dsonar.sources=. \
                             -Dsonar.host.url=http://localhost:9000 \
                             -Dsonar.login=${env.SONAR_AUTH_TOKEN}
+                            -X
                         """
                     }
                 }
