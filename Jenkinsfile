@@ -29,6 +29,11 @@ pipeline {
                 }
             }
         }
+ stage('Build Project') {
+            steps {
+                sh "mvn clean package"
+            }
+        }
 
     }
 }
