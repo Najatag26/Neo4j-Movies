@@ -4,7 +4,7 @@ pipeline {
     environment {
         DOCKER_IMAGE = 'najatag/neo4j-movies:latest'
         DOCKER_USER = 'najatag' 
-        DOCKER_PASS = credentials('dockerhub-credentials') // Credentials Docker Hub
+        DOCKER_PASS = credentials('dockerhub-credential') // Credentials Docker Hub
         SONAR_TOKEN = credentials('sonar-token') // Token SonarQube
     }
 
