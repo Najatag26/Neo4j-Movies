@@ -2,10 +2,10 @@ pipeline {
     agent any
 
     environment {
-        DOCKER_IMAGE = 'neo4j-movies:latest' // Nom de l'image Docker
+        DOCKER_IMAGE = 'neo4j-movies:latest' 
     }
     tools {
-        maven 'Maven' // Maven configuré dans Jenkins
+        maven 'Maven' 
     }
 
     stages {
@@ -19,6 +19,7 @@ pipeline {
         stage('Analyse SonarQube') {
             steps {
                 withSonarQubeEnv('SonarQube-Server') {
+                withCredentials([string(credentialsId: 'sonar-token', variable: 'SONAR_TOKEN')]) {
                     sh """
                     mvn clean verify sonar:sonar \
                         -Dsonar.projectKey=Neo4j-Movies \
@@ -28,7 +29,7 @@ pipeline {
                 }
             }
         }
-
+      } 
         stage('Quality Gate') {
             steps {
                 script {
@@ -60,5 +61,5 @@ pipeline {
                 }
             }
         }
-    } // Fin du bloc stages
-} // Fin du pipeline
+    } 
+} 
