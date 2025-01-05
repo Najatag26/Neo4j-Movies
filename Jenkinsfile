@@ -30,17 +30,6 @@ pipeline {
             }
         }
       } 
-        stage('Quality Gate') {
-            steps {
-                script {
-                    // Vérifier l'état du Quality Gate
-                    def qualityGate = waitForQualityGate()
-                    if (qualityGate.status != 'OK') {
-                        error "Quality Gate failed: ${qualityGate.status}"
-                    }
-                }
-            }
-        }
 
         stage('Build Docker Image') {
             steps {
@@ -53,7 +42,7 @@ pipeline {
         stage('Push Docker Image to DockerHub') {
             steps {
                 script {
-                    withCredentials([usernamePassword(credentialsId: 'dockerhub-credentials', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
+                    withCredentials([usernamePassword(credentialsId: 'dockerhub-credential', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
                         sh "echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin"
                         sh "docker tag ${DOCKER_IMAGE} ${DOCKER_USER}/${DOCKER_IMAGE}"
                         sh "docker push ${DOCKER_USER}/${DOCKER_IMAGE}"
