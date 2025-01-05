@@ -2,7 +2,10 @@ pipeline {
     agent any
 
     environment {
-        SONAR_TOKEN = credentials('sonar-token') // Jeton d'authentification
+        DOCKER_IMAGE = 'najatag/neo4j-movies:latest'
+        DOCKER_USER = 'najatag' 
+        DOCKER_PASS = credentials('dockerhub-credentials') // Credentials Docker Hub
+        SONAR_TOKEN = credentials('sonar-token') // Token SonarQube
     }
 
     tools {
@@ -29,11 +32,47 @@ pipeline {
                 }
             }
         }
- stage('Build Project') {
+
+        stage('Quality Gate') {
+            steps {
+                script {
+                    // Vérifier l'état du Quality Gate
+                    def qualityGate = waitForQualityGate()
+                    if (qualityGate.status != 'OK') {
+                        error "Quality Gate failed: ${qualityGate.status}"
+                    }
+                }
+            }
+        }
+
+        stage('Build Project') {
             steps {
                 sh "mvn clean package"
             }
         }
 
+        stage('Build Docker Image') {
+            steps {
+                script {
+                    // Construire l'image Docker
+                    sh "docker build -t ${DOCKER_IMAGE} ."
+                }
+            }
+        }
+
+        stage('Push Docker Image to DockerHub') {
+            steps {
+                script {
+                    withCredentials([usernamePassword(credentialsId: 'dockerhub-credentials', 
+                                                     usernameVariable: 'DOCKER_USER', 
+                                                     passwordVariable: 'DOCKER_PASS')]) {
+                        // Se connecter à Docker Hub
+                        sh "echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin"
+                        // Pousser l'image Docker
+                        sh "docker push ${DOCKER_IMAGE}"
+                    }
+                }
+            }
+        }
     }
 }
