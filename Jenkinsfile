@@ -1,7 +1,6 @@
 pipeline {
     agent any
 
-    gent any
     environment {
         DOCKER_IMAGE = 'neo4j-movies:latest' // Nom de l'image Docker
     }
@@ -42,13 +41,14 @@ pipeline {
             }
         }
 
-stage('Build Docker Image') {
+        stage('Build Docker Image') {
             steps {
                 script {
                     sh "docker build -t ${DOCKER_IMAGE} ."
                 }
             }
         }
+
         stage('Push Docker Image to DockerHub') {
             steps {
                 script {
@@ -60,3 +60,5 @@ stage('Build Docker Image') {
                 }
             }
         }
+    } // Fin du bloc stages
+} // Fin du pipeline
