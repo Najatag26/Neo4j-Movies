@@ -24,7 +24,7 @@ pipeline {
                     mvn clean verify sonar:sonar \
                         -Dsonar.projectKey=Neo4j-Movies \
                         -Dsonar.login=${SONAR_TOKEN} \
-                        -Dsonar.host.url=http://192.168.X.X:9000
+                        -Dsonar.host.url=http://192.168.1.102:9000
                     """
                 }
             }
