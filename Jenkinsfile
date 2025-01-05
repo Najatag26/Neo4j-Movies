@@ -63,7 +63,7 @@ pipeline {
         stage('Push Docker Image to DockerHub') {
             steps {
                 script {
-                    withCredentials([usernamePassword(credentialsId: 'dockerhub-credentials', 
+                    withCredentials([usernamePassword(credentialsId: 'dockerhub-credential', 
                                                      usernameVariable: 'DOCKER_USER', 
                                                      passwordVariable: 'DOCKER_PASS')]) {
                         // Se connecter à Docker Hub
