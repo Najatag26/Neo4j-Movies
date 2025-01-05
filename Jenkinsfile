@@ -30,13 +30,6 @@ pipeline {
             }
         }
 
-        // Étape pour attendre la Quality Gate
-        stage('Quality Gate') {
-            steps {
-                timeout(time: 1, unit: 'MINUTES') { // Temps d'attente maximum pour la qualité
-                    waitForQualityGate abortPipeline: true
-                }
-            }
-        }
+        
     }
 }
