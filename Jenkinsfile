@@ -19,7 +19,7 @@ pipeline {
                         def scannerHome = tool 'Jenkinsfile' // Assurez-vous que "SonarQube Scanner" est configuré dans Jenkins
                         sh """
                             ${scannerHome}/bin/sonar-scanner \
-                            -Dsonar.projectKey=Automatisation_Project \
+                            -Dsonar.projectKey=Neo4j-Movies \
                             -Dsonar.sources=. \
                             -Dsonar.host.url=http://sonarqube:9000 \
                             -Dsonar.login=${env.SONAR_AUTH_TOKEN}
