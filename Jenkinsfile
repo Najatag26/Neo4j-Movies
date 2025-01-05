@@ -1,13 +1,10 @@
 pipeline {
     agent any
 
+    gent any
     environment {
-        DOCKER_IMAGE = 'najatag/neo4j-movies:latest'
-        DOCKER_USER = 'najatag' 
-        DOCKER_PASS = credentials('dockerhub-credential') // Credentials Docker Hub
-        SONAR_TOKEN = credentials('sonar-token') // Token SonarQube
+        DOCKER_IMAGE = 'neo4j-movies:latest' // Nom de l'image Docker
     }
-
     tools {
         maven 'Maven' // Maven configuré dans Jenkins
     }
@@ -45,34 +42,21 @@ pipeline {
             }
         }
 
-        stage('Build Project') {
-            steps {
-                sh "mvn clean package"
-            }
-        }
-
-        stage('Build Docker Image') {
+stage('Build Docker Image') {
             steps {
                 script {
-                    // Construire l'image Docker
                     sh "docker build -t ${DOCKER_IMAGE} ."
                 }
             }
         }
-
         stage('Push Docker Image to DockerHub') {
             steps {
                 script {
-                    withCredentials([usernamePassword(credentialsId: 'dockerhub-credential', 
-                                                     usernameVariable: 'DOCKER_USER', 
-                                                     passwordVariable: 'DOCKER_PASS')]) {
-                        // Se connecter à Docker Hub
+                    withCredentials([usernamePassword(credentialsId: 'dockerhub-credentials', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
                         sh "echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin"
-                        // Pousser l'image Docker
-                        sh "docker push ${DOCKER_IMAGE}"
+                        sh "docker tag ${DOCKER_IMAGE} ${DOCKER_USER}/${DOCKER_IMAGE}"
+                        sh "docker push ${DOCKER_USER}/${DOCKER_IMAGE}"
                     }
                 }
             }
         }
-    }
-}
