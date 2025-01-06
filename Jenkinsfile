@@ -7,7 +7,9 @@ pipeline {
     tools {
         maven 'Maven' 
     }
-
+    tools{
+        Docker 'Docker'
+    }
     stages {
         stage('Cloner le projet') {
             steps {
@@ -46,6 +48,21 @@ pipeline {
                         sh "echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin"
                         sh "docker tag ${DOCKER_IMAGE} ${DOCKER_USER}/${DOCKER_IMAGE}"
                         sh "docker push ${DOCKER_USER}/${DOCKER_IMAGE}"
+                    }
+                }
+            }
+        }
+       stage('Deploy and Start the Dockerized Project') {
+            steps {
+                script {
+                    withCredentials([usernamePassword(credentialsId: 'dockerhub-credential', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
+                        sh "docker pull ${DOCKER_USER}/${DOCKER_IMAGE}"
+                        sh """
+                        if [ \$(docker ps -aq -f name=neo4j-movies ]; then
+                            docker rm -f neo4j-movies
+                        fi
+                        """
+                        sh "docker run -d --name neo4j-movies -p 8082:8081 ${DOCKER_USER}/${DOCKER_IMAGE}"
                     }
                 }
             }
